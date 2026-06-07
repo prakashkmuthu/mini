@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 
 # Read dataset
 df = pd.read_csv("data/demo.csv")
@@ -26,9 +27,12 @@ X_train, X_test, y_train, y_test = train_test_split(
 # Start MLflow experiment
 mlflow.set_experiment("student_pass_fail_experiment")
 
-with mlflow.start_run(run_name="Decision Tree - Dataset V2"):
+with mlflow.start_run(run_name="Random Forest - Dataset V3"):
 
-    model = DecisionTreeClassifier(random_state=42)
+    model = RandomForestClassifier(
+        n_estimators=100,
+        random_state=42
+    )
 
     model.fit(X_train, y_train)
 
@@ -38,9 +42,9 @@ with mlflow.start_run(run_name="Decision Tree - Dataset V2"):
 
     print("Accuracy:", accuracy)
 
-    mlflow.log_param("model_name", "Decision Tree")
-    mlflow.log_param("dataset_version", "V2")
-    mlflow.log_param("test_size", 0.2)
+    mlflow.log_param("model_name", "Random Forest")
+    mlflow.log_param("dataset_version", "V3")
+    mlflow.log_param("n_estimators", 100)
     mlflow.log_param("random_state", 42)
 
     mlflow.log_metric("accuracy", accuracy)
